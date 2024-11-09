@@ -51,3 +51,30 @@ module "wp-instances" {
   vpc_security_group_ids = [module.wp-vpc.wordpress_security_group_ids[0]]
   subnet_id = module.wp-vpc.public_subnet2_id
 }
+
+resource "aws_s3_bucket" "remote_state" {
+  bucket        = "seal-remote-state"
+  force_destroy = true
+  tags = {
+    Name        = "seal-remote-state"
+    Environment = var.env
+  }
+}
+
+resource "aws_dynamodb_table" "basic-dynamodb-table" {
+  name           = "SealRemoteState"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = "LockId"
+
+  attribute {
+    name = "LockId"
+    type = "S"
+  }
+
+  tags = {
+    Name        = "seal-remote-state"
+    Environment = var.env
+  }
+}

@@ -14,10 +14,10 @@ terraform {
   # This is the version of Terraform we will use
   required_version = ">= 1.9.8"
 
- backend "s3" {
-    bucket = "wp-terraform-state-staging"
-    key    = "terraform.tfstate"
-    region = "us-east-1"
-    dynamodb_table = "tfremotestate-ec2"
+backend "s3" {
+    bucket         = "seal-remote-state"
+    key            = "state"
+    region         = "us-east-1"
+    dynamodb_table = "SealRemoteState"
   }
 }
